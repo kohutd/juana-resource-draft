@@ -19,7 +19,7 @@ UserResult has UserData {
   id: int;
 }
 
-@resource "users" UserInput UserResult;
+@resource "users" "int" UserInput UserResult;
 
 /// pets
 PetData {
@@ -34,12 +34,12 @@ PetResult has PetData {
   id: int;
 }
 
-@resource "pets" PetInput PetResult {
+@resource "pets" "int" PetInput PetResult {
   getAllByUserId(userId: int): PetResult[];
 }
 ```
 
-Will generate:
+Will be transformed to this:
 
 ```juana
 name = "Users and pets database"
@@ -61,8 +61,8 @@ UserResult has UserData {
 }
 
 users.create(user: UserInput): UserResult;
-users.update(id: int, user: UserInput): UserResult;
-users.delete(id: int): void;
+users.updateById(id: int, user: UserInput): UserResult;
+users.deleteById(id: int): void;
 users.getAll(): UserResult[];
 users.getPage(page: int, perPage: int): UserResult[];
 users.getById(id: int): UserResult;
@@ -81,10 +81,10 @@ PetResult has PetData {
 }
 
 pets.create(pet: PetInput): PetResult;
-pets.update(id: int, pet: PetInput): PetResult;
-pets.delete(id: int): void;
+pets.updateById(id: int, pet: PetInput): PetResult;
+pets.deleteById(id: int): void;
 pets.getAll(): PetResult[];
-pets.getAllByUserId(userId: int): PetResult[];
 pets.getPage(page: int, perPage: int): PetResult[];
 pets.getById(id: int): PetResult;
+pets.getAllByUserId(userId: int): PetResult[];
 ```
